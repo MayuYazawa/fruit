@@ -1,112 +1,48 @@
 Rails.application.routes.draw do
-  namespace :user do
-    get 'cart_items/index'
-    get 'cart_items/create'
-    get 'cart_items/update'
-    get 'cart_items/destroy'
-    get 'cart_items/destroy_all'
+  
+  devise_for :users, controllers: {
+    registrations: "user/registrations",
+    sessions: 'user/sessions'
+  }
+  
+  devise_for :admin, controllers: {
+    sessions: "admin/sessions"
+  }
+  
+  # 会員側のルーティング設定
+  scope module: :user do
+    root to: "homes#top"
+    get "about" => "homes#about"
+
+    resources :items, only: [:index,:show]
+    # resources :customers, only: [:edit,:show] 今回はいらない　アンスクライブをクワイトに統一
+    get "/users/my_page" => "users#show"
+    get 'users/information/edit' => 'users#edit'
+    patch 'users/information' => 'users#update'
+    get 'users/quit' => 'users#quit'
+    patch 'users/withdraw' => 'users#withdraw'
+
+    resources :cart_items do
+      member do
+        delete "destroy_all"
+      end
+    end
+    get "/orders/complete" => "orders#complete"
+    resources :orders, only: [:new,:index,:show,:create]
+    post "/orders/confirm" => "orders#confirm"
+    resources :deliveries, only: [:index, :create, :edit, :update, :destroy]
   end
-  namespace :user do
-    get 'users/show'
-    get 'users/edit'
-    get 'users/update'
-    get 'users/quit'
-    get 'users/withdraw'
-  end
-  namespace :user do
-    get 'deliveries/index'
-    get 'deliveries/edit'
-    get 'deliveries/create'
-    get 'deliveries/update'
-    get 'deliveries/destroy'
-  end
-  namespace :user do
-    get 'homes/top'
-    get 'homes/about'
-  end
-  namespace :user do
-    get 'items/index'
-    get 'items/show'
-  end
-  namespace :user do
-    get 'orders/new'
-    get 'orders/confirm'
-    get 'orders/comolete'
-    get 'orders/create'
-    get 'orders/index'
-    get 'orders/show'
-  end
-  namespace :public do
-    get 'cart_items/index'
-    get 'cart_items/create'
-    get 'cart_items/update'
-    get 'cart_items/destroy'
-    get 'cart_items/destroy_all'
-  end
-  namespace :public do
-    get 'users/show'
-    get 'users/edit'
-    get 'users/update'
-    get 'users/quit'
-    get 'users/withdraw'
-  end
-  namespace :public do
-    get 'deliveries/index'
-    get 'deliveries/edit'
-    get 'deliveries/create'
-    get 'deliveries/update'
-    get 'deliveries/destroy'
-  end
-  namespace :public do
-    get 'orders/new'
-    get 'orders/confirm'
-    get 'orders/complete'
-    get 'orders/create'
-    get 'orders/index'
-    get 'orders/show'
-  end
+  
+  # 管理者側のルーティング設定
   namespace :admin do
-    get 'users/index'
-    get 'users/show'
-    get 'users/edit'
-    get 'users/update'
-  end
-  namespace :admin do
-    get 'order_details/show'
-    get 'order_details/update'
-  end
-  namespace :admin do
-    get 'orders/index'
-    get 'orders/show'
-    get 'orders/update'
-  end
-  devise_for :users
-  namespace :admin do
-    get 'items/new'
-    get 'items/create'
-    get 'items/index'
-    get 'items/show'
-    get 'items/edit'
-    get 'items/update'
-  end
-  namespace :admin do
-    get 'genres/index'
-    get 'genres/create'
-    get 'genres/edit'
-    get 'genres/update'
-  end
-  namespace :admin do
-    get 'customers/index'
-    get 'customers/show'
-    get 'customers/edit'
-    get 'customers/update'
-  end
-  namespace :public do
-    get 'homes/top'
-    get 'homes/about'
-  end
-  namespace :admin do
-    get 'homes/top'
+    get "" => "orders#index"
+
+    resources :items, only: [:new,:index,:create,:show,:edit,:update]
+    resources :genres, only: [:index,:create,:edit,:update]
+    resources :users, only: [:index,:show,:edit,:update]
+    resources :orders, only: [:show, :update]
+    resources :order_details, only:[:update]
+
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
