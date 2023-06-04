@@ -5,7 +5,7 @@
 
   <div class="row mb-1">
     <h5 class="col-2">登録情報</h5>
-    <%= link_to "編集する", customers_information_edit_path, class: "btn btn-sm btn-success px-4" %>
+    <%= link_to "編集する", users_information_edit_path, class: "btn btn-sm btn-success px-4" %>
   </div>
 
   <div class="row">
@@ -13,27 +13,27 @@
       <table class="table table-bordered">
         <tr>
           <th>氏名</th>
-          <td><%= @customer.last_name + " " + @customer.first_name %></td>
+          <td><%= @user.last_name + " " + @user.first_name %></td>
         </tr>
         <tr>
           <th>カナ</th>
-          <td><%= @customer.kana_last + " " + @customer.kana_first %></td>
+          <td><%= @user.kana_last + " " + @user.kana_first %></td>
         </tr>
         <tr>
           <th>郵便番号</th>
-          <td><%= @customer.post_code %></td>
+          <td><%= @user.post_code %></td>
         </tr>
         <tr>
           <th>住所</th>
-          <td><%= @customer.address %></td>
+          <td><%= @user.address %></td>
         </tr>
         <tr>
           <th>電話番号</th>
-          <td><%= @customer.telephone %></td>
+          <td><%= @user.telephone %></td>
         </tr>
         <tr>
           <th>メールアドレス</th>
-          <td><%= @customer.email %></td>
+          <td><%= @user.email %></td>
         </tr>
       </table>
     </div>
